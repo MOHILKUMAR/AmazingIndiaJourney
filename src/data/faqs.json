@@ -1,0 +1,62 @@
+[
+  {
+    "id": "f0",
+    "q": "What is the cancellation policy?",
+    "a": "Same-day excursions can be cancelled up to 24 hours in advance for a full refund. For multi-day packages, please confirm terms with our team at booking.",
+    "category": "Booking"
+  },
+  {
+    "id": "f1",
+    "q": "Can I reserve a tour ahead of time?",
+    "a": "Yes. Reserve now and pay later: book with a 15% advance deposit and pay the balance during the tour, or choose pay on arrival.",
+    "category": "Booking"
+  },
+  {
+    "id": "f2",
+    "q": "What payment methods are accepted?",
+    "a": "Cash on arrival, credit card or PayPal.",
+    "category": "Booking"
+  },
+  {
+    "id": "f3",
+    "q": "Can itineraries be customised?",
+    "a": "Absolutely. Every trip is 100% tailor-made to your pace, interests and budget. Ask us for a free quote.",
+    "category": "Booking"
+  },
+  {
+    "id": "f4",
+    "q": "Where are pickup and drop-off points?",
+    "a": "Any hotel in Delhi, Noida, Gurgaon or the surrounding region, as well as Delhi airport. Please share your pickup location when booking.",
+    "category": "On tour"
+  },
+  {
+    "id": "f5",
+    "q": "Are the tours private?",
+    "a": "Yes. All tours are private: only your group participates, with a dedicated AC vehicle, driver and guide.",
+    "category": "On tour"
+  },
+  {
+    "id": "f6",
+    "q": "Which languages do your guides speak?",
+    "a": "Live guides are available in English, Spanish, German, French, Russian and Japanese.",
+    "category": "On tour"
+  },
+  {
+    "id": "f7",
+    "q": "What hotels are used on multi-day tours?",
+    "a": "Golden Triangle and Rajasthan packages use 4 & 5 star category hotels, with heritage options on request.",
+    "category": "On tour"
+  },
+  {
+    "id": "f8",
+    "q": "Is the Taj Mahal open every day?",
+    "a": "No. The Taj Mahal is closed on Fridays. Plan Agra visits for any other day of the week.",
+    "category": "Taj Mahal & monuments"
+  },
+  {
+    "id": "f9",
+    "q": "Are monument entry fees included?",
+    "a": "Not on most Agra day tours (entry fees and meals are excluded). The Delhi City Tour includes entrance fees and a rickshaw ride. Each package lists its inclusions.",
+    "category": "Taj Mahal & monuments"
+  }
+]

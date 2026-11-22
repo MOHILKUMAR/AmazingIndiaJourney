@@ -1,0 +1,30 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourCard from '../../components/TourCard.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+
+export async function getStaticPaths() {
+  const dests = await getCollection('destinations');
+  return dests.map((d) => ({ params: { slug: d.id }, props: { dest: d } }));
+}
+interface Props { dest: CollectionEntry<'destinations'> }
+const { dest } = Astro.props;
+const { Content } = await render(dest);
+const tours = (await getCollection('tours')).filter((t) => t.data.destinations.includes(dest.id)).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title={`${dest.data.title} Tour Packages`} description={dest.data.summary} image={dest.data.image}>
+  <PageHero title={`${dest.data.title} tour packages`} subtitle={dest.data.summary} eyebrow={dest.data.headline} image={dest.data.image} crumbs={[{ label: 'Tours', href: '/tours/' }, { label: dest.data.title }]} />
+  <section class="container-x py-14">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <h2 class="text-3xl text-dark-900">{tours.length} {dest.data.title} tour{tours.length === 1 ? '' : 's'}</h2>
+      <p class="rounded-lg bg-accent-100 px-4 py-2 text-sm text-dark-900">Best time to visit: <strong>{dest.data.bestTime}</strong></p>
+    </div>
+    <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{tours.map((t) => <TourCard tour={t} />)}</div>
+  </section>
+  <section class="container-x">
+    <div class="prose-travel max-w-3xl"><Content /></div>
+  </section>
+  <CTABanner title="Plan your" accent={`${dest.data.title} trip`} />
+</Base>

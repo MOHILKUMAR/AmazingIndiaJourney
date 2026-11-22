@@ -1,0 +1,24 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import ImageBox from '../../components/ImageBox.astro';
+import { getCollection } from 'astro:content';
+import { formatDate } from '../../scripts/format';
+const posts = (await getCollection('blog', (p) => !p.data.draft)).sort((a, b) => +b.data.date - +a.data.date);
+---
+<Base title="Travel Blog" description="India travel tips, guides and inspiration.">
+  <PageHero title="Travel journal" subtitle="Tips, guides and stories to help you plan your India trip." crumbs={[{ label: 'Blog' }]} />
+  <section class="container-x grid gap-8 py-16 sm:grid-cols-2 lg:grid-cols-3">
+    {posts.map((p) => (
+      <article class="card group overflow-hidden">
+        <a href={`/blog/${p.id}/`} class="block aspect-[16/10] overflow-hidden"><ImageBox src={p.data.image} alt={p.data.title} seed={p.id} label={p.data.category} class="h-full w-full transition duration-500 group-hover:scale-105" /></a>
+        <div class="p-6">
+          <p class="text-xs text-muted">{formatDate(p.data.date)} · {p.data.category}</p>
+          <h2 class="mt-2 text-xl leading-snug text-dark-900"><a href={`/blog/${p.id}/`} class="hover:text-dark-700">{p.data.title}</a></h2>
+          <p class="mt-2 text-sm text-muted line-clamp-3">{p.data.description}</p>
+          <a href={`/blog/${p.id}/`} class="mt-4 inline-block text-sm font-semibold text-dark-700 hover:text-accent-600">Read article →</a>
+        </div>
+      </article>
+    ))}
+  </section>
+</Base>

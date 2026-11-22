@@ -1,0 +1,65 @@
+---
+// Two-row white header (reference layout):
+// row 1: logo · rating · email · solid green "Enquire Now" block
+// row 2: centred menu on light grey, active item in green
+import Logo from './Logo.astro';
+import { nav, site, whatsappLink } from '../site.config';
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="sticky top-0 z-40 bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+  <div class="flex items-stretch justify-between">
+    <div class="container-x flex items-center justify-between gap-4 py-2 xl:!max-w-none xl:!pr-6">
+      <Logo />
+      <div class="hidden items-center gap-6 text-sm text-dark-700 lg:flex">
+        <span class="flex items-center gap-1.5">
+          <span class="text-star" aria-hidden="true">★</span>
+          <strong class="text-dark-900">{site.rating.score}/5</strong>
+          <span class="text-muted">on {site.rating.source}</span>
+        </span>
+        <a href={`mailto:${site.email}`} class="hover:text-primary-500">{site.email}</a>
+        <a href={whatsappLink()} target="_blank" rel="noopener" class="hover:text-primary-500">{site.phone}</a>
+      </div>
+      <button id="menu-btn" class="p-2 text-dark-900 xl:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      </button>
+    </div>
+    <a href="/contact/" class="hidden shrink-0 items-center bg-dark-900 px-8 text-base font-bold text-white transition hover:bg-dark-800 sm:flex">Enquire Now</a>
+  </div>
+
+  <nav class="hidden border-t border-line bg-sand xl:block" aria-label="Main">
+    <ul class="container-x flex items-center justify-center gap-7 py-3">
+      <li><a href="/" aria-current={isActive('/') ? 'page' : undefined} class:list={['text-sm font-medium transition hover:text-primary-500', isActive('/') ? 'text-primary-500' : 'text-dark-900']}>Home</a></li>
+      {nav.map((item) => (
+        <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined} class:list={['text-sm font-medium transition hover:text-primary-500', isActive(item.href) ? 'text-primary-500' : 'text-dark-900']}>{item.label}</a></li>
+      ))}
+      <li><a href="/faq/" aria-current={isActive('/faq/') ? 'page' : undefined} class:list={['text-sm font-medium transition hover:text-primary-500', isActive('/faq/') ? 'text-primary-500' : 'text-dark-900']}>FAQ</a></li>
+    </ul>
+  </nav>
+
+  <nav id="mobile-menu" class="hidden border-t border-line bg-white xl:hidden" aria-label="Mobile">
+    <div class="container-x flex max-h-[75vh] flex-col overflow-y-auto py-3">
+      <a href="/" class="border-b border-line py-3 text-base font-medium text-dark-900">Home</a>
+      {nav.map((item) => <a href={item.href} class="border-b border-line py-3 text-base font-medium text-dark-900">{item.label}</a>)}
+      <a href="/faq/" class="border-b border-line py-3 text-base font-medium text-dark-900">FAQ</a>
+      <p class="py-3 text-sm text-muted"><span class="text-star">★</span> {site.rating.score}/5 on {site.rating.source} · <a href={`mailto:${site.email}`} class="break-all text-accent-600">{site.email}</a></p>
+      <a href="/contact/" class="btn-primary mt-2">Enquire Now</a>
+    </div>
+  </nav>
+</header>
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  btn?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu && !menu.classList.contains('hidden')) {
+      menu.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+      btn?.focus();
+    }
+  });
+</script>

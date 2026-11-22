@@ -1,0 +1,38 @@
+[
+  {
+    "id": "r0",
+    "name": "[Guest name] (SAMPLE)",
+    "location": "[Country]",
+    "date": "2026",
+    "rating": 5,
+    "text": "The Taj Mahal at sunrise with our guide was the highlight of our trip. Pickup was on time and the car was spotless.",
+    "tour": "same-day-taj-mahal-tour-by-car"
+  },
+  {
+    "id": "r1",
+    "name": "[Guest name] (SAMPLE)",
+    "location": "[Country]",
+    "date": "2026",
+    "rating": 5,
+    "text": "Everything on our Golden Triangle tour was arranged perfectly: hotels, driver and guides. We never had to worry about a thing.",
+    "tour": "golden-triangle-tour-5-days"
+  },
+  {
+    "id": "r2",
+    "name": "[Guest name] (SAMPLE)",
+    "location": "[Country]",
+    "date": "2026",
+    "rating": 5,
+    "text": "Three tiger safaris in Ranthambore and we saw a tigress on the second drive. Wonderful planning by the team.",
+    "tour": "golden-triangle-with-ranthambore"
+  },
+  {
+    "id": "r3",
+    "name": "[Guest name] (SAMPLE)",
+    "location": "[Country]",
+    "date": "2026",
+    "rating": 5,
+    "text": "Our guide knew the history of every fort in Rajasthan. The pace was relaxed and the heritage hotels were beautiful.",
+    "tour": "rajasthan-majestic-palaces-scenic-retreats"
+  }
+]

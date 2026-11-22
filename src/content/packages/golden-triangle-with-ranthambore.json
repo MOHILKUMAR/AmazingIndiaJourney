@@ -1,0 +1,57 @@
+{
+  "title": "Golden Triangle with Ranthambore",
+  "summary": "Delhi, Agra and Jaipur plus Ranthambore National Park with three tiger safaris.",
+  "destinations": [
+    "golden-triangle",
+    "rajasthan",
+    "agra",
+    "delhi",
+    "jaipur"
+  ],
+  "route": [
+    "Delhi",
+    "Agra",
+    "Ranthambore",
+    "Jaipur",
+    "Delhi"
+  ],
+  "reviewCount": 430,
+  "image": "/images/tours/gt-ranthambore.webp",
+  "imageAlt": "Tiger in Ranthambore",
+  "order": 20,
+  "featured": true,
+  "highlights": [
+    "Delhi · Agra",
+    "Ranthambore: 3 tiger safaris",
+    "Jaipur → Delhi"
+  ],
+  "category": "gt-extension",
+  "days": 8,
+  "duration": "8 Days",
+  "hotelLevel": "4 & 5 star hotels",
+  "guide": "English-speaking guide",
+  "vehicle": "Private AC car",
+  "note": "The Taj Mahal remains closed on Fridays.",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "For multi-day packages, please confirm cancellation terms with our team at the time of booking."
+    },
+    {
+      "title": "Hotels",
+      "body": "4 & 5 star category hotels, with heritage options on request."
+    },
+    {
+      "title": "Customisation",
+      "body": "Every trip is 100% tailor-made to your pace, interests and budget. Ask us for a free quote."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

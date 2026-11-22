@@ -1,0 +1,17 @@
+# Cloudflare Pages headers (ignored by Hostinger/Apache, which uses .htaccess instead).
+# The free *.pages.dev preview must never show up in Google: only the real domain should be indexed.
+
+# Main preview: https://<project>.pages.dev
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+# Branch / per-commit previews: https://<hash>.<project>.pages.dev
+https://:version.:project.pages.dev/*
+  X-Robots-Tag: noindex, nofollow
+
+# Long cache for built assets (file names change on every build)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/images/*
+  Cache-Control: public, max-age=2592000

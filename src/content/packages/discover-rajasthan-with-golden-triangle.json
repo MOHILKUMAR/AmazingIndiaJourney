@@ -1,0 +1,56 @@
+{
+  "title": "Discover Rajasthan with Golden Triangle",
+  "summary": "11 days through Delhi, Agra, Jaipur, Jodhpur and Udaipur, ending with a flight back to Delhi.",
+  "route": [
+    "Delhi",
+    "Agra",
+    "Fatehpur Sikri",
+    "Jaipur",
+    "Jodhpur",
+    "Udaipur",
+    "Delhi (flight)"
+  ],
+  "days": 11,
+  "duration": "11 Days",
+  "reviewCount": 680,
+  "image": "/images/tours/raj-11.webp",
+  "imageAlt": "Amber Fort, Jaipur",
+  "order": 30,
+  "featured": true,
+  "highlights": [
+    "Golden Triangle highlights",
+    "Jodhpur's blue city",
+    "Udaipur lakes & palaces",
+    "Flight back to Delhi"
+  ],
+  "category": "rajasthan",
+  "destinations": [
+    "rajasthan"
+  ],
+  "hotelLevel": "4 & 5 star hotels",
+  "guide": "English-speaking guide",
+  "vehicle": "Private AC car",
+  "note": "The Taj Mahal remains closed on Fridays.",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "For multi-day packages, please confirm cancellation terms with our team at the time of booking."
+    },
+    {
+      "title": "Hotels",
+      "body": "4 & 5 star category hotels, with heritage options on request."
+    },
+    {
+      "title": "Customisation",
+      "body": "Every trip is 100% tailor-made to your pace, interests and budget. Ask us for a free quote."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

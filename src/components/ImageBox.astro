@@ -1,0 +1,25 @@
+---
+// Shows the image if provided, otherwise a styled placeholder (until client photos arrive)
+interface Props { src?: string; alt?: string; label?: string; class?: string; eager?: boolean; seed?: string }
+const { src, alt = '', label = '', class: cls = '', eager = false, seed = label } = Astro.props;
+const palettes = [
+  ['#0f4f4a', '#1a7f76', '#d4922b'],
+  ['#5a3a1a', '#b9771a', '#e4ad55'],
+  ['#0b3d3a', '#3b6e5a', '#e4ad55'],
+  ['#3d2a4f', '#7a4a6b', '#d4922b'],
+  ['#163a52', '#2f6f8f', '#e4ad55'],
+];
+const hash = [...(seed || 'x')].reduce((a, c) => a + c.charCodeAt(0), 0);
+const [c1, c2, c3] = palettes[hash % palettes.length];
+---
+{src ? (
+  <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" class={`object-cover ${cls}`} />
+) : (
+  <div class={`relative overflow-hidden ${cls}`} style={`background:${c1}`} role="img" aria-label={alt || label}>
+    <svg class="absolute inset-0 h-full w-full opacity-25" preserveAspectRatio="xMidYMax slice" viewBox="0 0 400 300" aria-hidden="true">
+      <path d="M0 230 L70 170 L120 200 L190 130 L260 190 L320 150 L400 210 L400 300 L0 300Z" fill={c3} />
+      <path d="M0 260 L90 215 L160 245 L240 200 L320 240 L400 220 L400 300 L0 300Z" fill="#000" opacity=".25" />
+    </svg>
+    {label && <span class="absolute bottom-3 left-4 text-xs font-medium uppercase tracking-widest text-white/80">{label}</span>}
+  </div>
+)}

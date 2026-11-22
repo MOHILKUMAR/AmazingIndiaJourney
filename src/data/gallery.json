@@ -1,0 +1,18 @@
+[
+  { "src": "/images/hero.webp", "alt": "Taj Mahal, Agra", "w": 1344, "h": 896, "group": "Agra" },
+  { "src": "/images/tours/same-day-taj-car.webp", "alt": "Same day Taj Mahal tour by car", "w": 564, "h": 563, "group": "Agra" },
+  { "src": "/images/tours/taj-train.webp", "alt": "Taj Mahal tour by superfast train", "w": 564, "h": 563, "group": "Agra" },
+  { "src": "/images/about.webp", "alt": "Traveller at the Taj Mahal framed by an arch", "w": 564, "h": 563, "group": "Agra" },
+  { "src": "/images/tours/delhi-city.webp", "alt": "Delhi city tour", "w": 564, "h": 563, "group": "Delhi" },
+  { "src": "/images/amber-fort.webp", "alt": "Amber Fort, Jaipur", "w": 1600, "h": 1193, "group": "Jaipur" },
+  { "src": "/images/tours/jaipur-day.webp", "alt": "Jaipur city day tour", "w": 564, "h": 563, "group": "Jaipur" },
+  { "src": "/images/tours/gt-3.webp", "alt": "Golden Triangle tour", "w": 564, "h": 563, "group": "Golden Triangle" },
+  { "src": "/images/tours/gt-5.webp", "alt": "Golden Triangle tour", "w": 564, "h": 563, "group": "Golden Triangle" },
+  { "src": "/images/tours/gt-ranthambore.webp", "alt": "Ranthambore tiger safari", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/gt-udaipur.webp", "alt": "Udaipur, the city of lakes", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/gt-jodhpur-udaipur.webp", "alt": "Jodhpur and Udaipur", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/raj-11.webp", "alt": "Rajasthan forts and palaces", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/raj-14.webp", "alt": "Rajasthan palaces and scenic retreats", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/raj-19.webp", "alt": "Rajasthan forts", "w": 564, "h": 563, "group": "Rajasthan" },
+  { "src": "/images/tours/gt-varanasi.webp", "alt": "Varanasi ghats", "w": 564, "h": 563, "group": "Varanasi" }
+]

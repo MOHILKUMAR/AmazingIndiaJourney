@@ -1,0 +1,16 @@
+---
+// Two full-width promise blocks, navy + green (reference: "Book now pay later" + "Full refund")
+const items = [
+  { title: 'Reserve now, pay later', text: 'Just a 15% advance deposit to confirm. Pay the rest during the tour, or pay on arrival.', href: '/faq/', cls: 'bg-dark-900' },
+  { title: 'Free cancellation', text: 'Cancel any same-day tour up to 24 hours before it starts and get a full refund.', href: '/faq/', cls: 'bg-primary-500' },
+];
+---
+<section class="grid md:grid-cols-2" aria-label="Our booking promises">
+  {items.map((i) => (
+    <div class:list={['px-6 py-10 text-white sm:px-12 lg:px-16', i.cls]}>
+      <h2 class="text-2xl !text-white">{i.title}</h2>
+      <p class="mt-2 max-w-md text-[15px] leading-relaxed text-white/95">{i.text}</p>
+      <a href={i.href} class="btn-ghost mt-6 !py-2.5">Learn more</a>
+    </div>
+  ))}
+</section>

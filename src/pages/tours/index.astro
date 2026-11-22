@@ -1,0 +1,92 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourCard from '../../components/TourCard.astro';
+import CTABanner from '../../components/CTABanner.astro';
+import { getCollection } from 'astro:content';
+import { categories } from '../../site.config';
+
+const tours = (await getCollection('tours')).sort((a, b) => a.data.order - b.data.order);
+const destinations = (await getCollection('destinations')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="All India Tour Packages" description="Same day Taj Mahal tours, Golden Triangle tours and Rajasthan tour packages, all private, all tailor-made.">
+  <PageHero title="India tour packages" subtitle="Same day tours, Golden Triangle and Rajasthan: every tour is private and 100% tailor-made." image="/images/tours/gt-5.webp" crumbs={[{ label: 'Tours' }]} />
+  <section class="container-x py-14">
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Tour category">
+      <button type="button" data-cat-btn="" class="cat-btn rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">All tours</button>
+      {categories.map((c) => <button type="button" data-cat-btn={c.id} class="cat-btn rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">{c.label}</button>)}
+    </div>
+    <form id="filters" class="card mt-5 grid gap-4 p-5 sm:grid-cols-3" aria-label="Filter tours">
+      <input type="hidden" name="cat" />
+      <label class="text-sm font-medium text-dark-900">Destination
+        <select name="dest" class="input mt-1.5">
+          <option value="">All destinations</option>
+          {destinations.map((d) => <option value={d.id}>{d.data.title}</option>)}
+        </select>
+      </label>
+      <label class="text-sm font-medium text-dark-900">Duration
+        <select name="dur" class="input mt-1.5">
+          <option value="">Any length</option>
+          <option value="1-1">Same day</option>
+          <option value="2-6">2–6 days</option>
+          <option value="7-12">7–12 days</option>
+          <option value="13-99">13+ days</option>
+        </select>
+      </label>
+      <label class="text-sm font-medium text-dark-900">Sort by
+        <select name="sort" class="input mt-1.5">
+          <option value="">Recommended</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="days">Duration: short to long</option>
+        </select>
+      </label>
+    </form>
+    <p id="result-count" class="mt-6 text-sm text-muted" aria-live="polite">{tours.length} tours</p>
+    <div id="tour-grid" class="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {tours.map((t) => <TourCard tour={t} />)}
+    </div>
+    <p id="no-results" class="mt-10 hidden text-center text-muted">No tours match these filters. <a href="/contact/" class="text-primary-500 underline">Ask us for a tailor-made trip</a>.</p>
+  </section>
+  <CTABanner title="Can’t find the" accent="perfect tour?" text="Every trip is 100% tailor-made. Tell us your dates and interests and we’ll design one for you." />
+</Base>
+<script>
+  const form = document.getElementById('filters') as HTMLFormElement;
+  const grid = document.getElementById('tour-grid')!;
+  const original = [...grid.children] as HTMLElement[];
+  const count = document.getElementById('result-count')!;
+  const empty = document.getElementById('no-results')!;
+  const catInput = form.elements.namedItem('cat') as HTMLInputElement;
+  const catBtns = [...document.querySelectorAll<HTMLButtonElement>('[data-cat-btn]')];
+
+  const params = new URLSearchParams(location.search);
+  for (const [k, v] of params) { const el = form.elements.namedItem(k) as HTMLInputElement | null; if (el) el.value = v; }
+
+  function apply() {
+    const f = new FormData(form);
+    const cat = String(f.get('cat') || ''), dest = String(f.get('dest') || ''), dur = String(f.get('dur') || ''), sort = String(f.get('sort') || '');
+    const [min, max] = dur ? dur.split('-').map(Number) : [0, 999];
+    catBtns.forEach((b) => {
+      const on = b.dataset.catBtn === cat;
+      b.setAttribute('aria-pressed', String(on));
+      b.classList.toggle('!bg-dark-900', on); b.classList.toggle('!text-white', on); b.classList.toggle('!border-dark-900', on);
+    });
+    const n = (el: HTMLElement, k: string) => Number(el.dataset[k]);
+    const list = [...original].sort((a, b) =>
+      sort === 'price-asc' ? n(a, 'price') - n(b, 'price') : sort === 'days' ? n(a, 'days') - n(b, 'days') : n(a, 'order') - n(b, 'order'));
+    let visible = 0;
+    list.forEach((c) => {
+      const days = n(c, 'days');
+      const show = (!cat || c.dataset.cat === cat) && (!dest || c.dataset.dest!.split(' ').includes(dest)) && days >= min && days <= max;
+      c.hidden = !show;
+      if (show) visible++;
+      grid.appendChild(c);
+    });
+    count.textContent = `${visible} tour${visible === 1 ? '' : 's'}`;
+    empty.classList.toggle('hidden', visible > 0);
+    const q = new URLSearchParams([...f.entries()].filter(([, v]) => v) as [string, string][]).toString();
+    history.replaceState(null, '', q ? `?${q}` : location.pathname);
+  }
+  catBtns.forEach((b) => b.addEventListener('click', () => { catInput.value = b.dataset.catBtn ?? ''; apply(); }));
+  form.addEventListener('change', apply);
+  apply();
+</script>

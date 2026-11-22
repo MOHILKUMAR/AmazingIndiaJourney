@@ -1,0 +1,58 @@
+---
+// Reference layout: rating card on the left ("quote" tile + Google stars), review slider on the right.
+import { getCollection } from 'astro:content';
+import Stars from './Stars.astro';
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../site.config';
+interface Props { tour?: string }
+const { tour } = Astro.props;
+let reviews = await getCollection('reviews');
+if (tour) {
+  const matched = reviews.filter((r) => r.data.tour === tour);
+  reviews = [...matched, ...reviews.filter((r) => r.data.tour !== tour)];
+}
+---
+<section class="py-20">
+  <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2.6fr)]">
+    <div class="card relative self-start p-8 pt-12">
+      <span class="absolute -top-6 left-8 flex h-12 w-12 items-center justify-center rounded-md bg-accent-600 font-accent text-4xl leading-none text-white" aria-hidden="true">“</span>
+      <p class="text-sm font-bold text-dark-900">{site.rating.source} rating</p>
+      <p class="mt-1 flex items-center gap-2"><span class="text-3xl font-extrabold text-dark-900">{site.rating.score}</span><Stars rating={5} /></p>
+      <p class="mt-1 text-xs text-muted">from {site.rating.count} reviews</p>
+      <a href="/reviews/" class="btn-outline mt-6 w-full !py-2.5">Read all reviews</a>
+    </div>
+
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-end justify-between gap-4">
+        <SectionHeading title="What our guests" accent="say about us" />
+        <div class="flex gap-2">
+          <button class="review-prev rounded-md border border-line bg-white px-4 py-2.5 text-dark-900 transition hover:bg-primary-500 hover:text-white" aria-label="Previous reviews">←</button>
+          <button class="review-next rounded-md border border-line bg-white px-4 py-2.5 text-dark-900 transition hover:bg-primary-500 hover:text-white" aria-label="Next reviews">→</button>
+        </div>
+      </div>
+      <div class="review-track mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-6 [scrollbar-width:none]">
+        {reviews.map((r) => (
+          <figure class="w-[85%] shrink-0 snap-start border border-line bg-white p-6 sm:w-[46%] xl:w-[31.5%]">
+            <Stars rating={r.data.rating} />
+            <blockquote class="mt-4 text-sm leading-relaxed text-ink line-clamp-6">“{r.data.text}”</blockquote>
+            <figcaption class="mt-5 flex items-center gap-3 border-t border-line pt-4">
+              <span class="flex h-10 w-10 items-center justify-center rounded-md bg-primary-100 font-bold text-primary-600">{r.data.name.charAt(0)}</span>
+              <span>
+                <span class="block text-sm font-bold text-dark-900">{r.data.name}</span>
+                <span class="block text-xs text-muted">{r.data.location} · {r.data.date}</span>
+              </span>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  document.querySelectorAll<HTMLElement>('.review-track').forEach((track) => {
+    const root = track.closest('section')!;
+    const step = () => track.clientWidth * 0.9;
+    root.querySelector('.review-prev')?.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    root.querySelector('.review-next')?.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+  });
+</script>

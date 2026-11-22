@@ -1,0 +1,219 @@
+---
+// Admin panel: database keep-alive
+// Needs: npm i @supabase/supabase-js  and  .env with PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_ANON_KEY
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Admin | Database Status</title>
+  </head>
+  <body>
+    <main class="wrap">
+      <!-- Login -->
+      <section id="login" class="card" hidden>
+        <h1>Admin login</h1>
+        <form id="login-form">
+          <label>Email <input type="email" id="email" required autocomplete="username" /></label>
+          <label>Password <input type="password" id="password" required autocomplete="current-password" /></label>
+          <button type="submit" class="btn">Log in</button>
+          <p id="login-error" class="error"></p>
+        </form>
+      </section>
+
+      <!-- Dashboard -->
+      <section id="dashboard" hidden>
+        <header class="top">
+          <h1>Database status</h1>
+          <button id="logout" class="link">Log out</button>
+        </header>
+
+        <div class="card">
+          <span id="badge" class="badge">Checking…</span>
+          <p class="big" id="days-left">–</p>
+          <p class="muted">Last activity: <span id="last-ping">–</span></p>
+          <div class="bar"><div id="bar-fill"></div></div>
+
+          <button id="ping-btn" class="btn">Keep database active now</button>
+          <p id="ping-msg" class="muted"></p>
+
+          <label class="toggle">
+            <input type="checkbox" id="auto-ping" checked />
+            Auto-ping when this page opens (if last ping is older than 12 hours)
+          </label>
+          <p class="muted small">A daily automatic ping also runs from GitHub at 9:00 AM IST.</p>
+        </div>
+
+        <div class="card">
+          <h2>Recent activity</h2>
+          <table>
+            <thead><tr><th>Time</th><th>Source</th></tr></thead>
+            <tbody id="history"><tr><td colspan="2">–</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      import { createClient } from '@supabase/supabase-js';
+
+      const SB_URL = import.meta.env.PUBLIC_SUPABASE_URL;
+      const SB_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+      const configured = Boolean(SB_URL && SB_KEY && !SB_URL.includes('YOUR-PROJECT'));
+      const supabase = createClient(configured ? SB_URL : 'https://placeholder.supabase.co', configured ? SB_KEY : 'placeholder');
+      if (!configured) {
+        setTimeout(() => {
+          const el = document.getElementById('login-error');
+          if (el) el.textContent = 'Supabase is not configured yet. Add PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY to .env and restart.';
+        }, 0);
+      }
+      const PAUSE_DAYS = 7;
+      const AUTO_KEY = 'admin-auto-ping';
+      const $ = (id) => document.getElementById(id);
+
+      const fmt = (iso) =>
+        new Date(iso).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+
+      function setBadge(text, level) {
+        const b = $('badge');
+        b.textContent = text;
+        b.dataset.level = level; // ok | warn | danger
+      }
+
+      async function loadStatus() {
+        const { data, error } = await supabase.rpc('heartbeat_status');
+        if (error) {
+          setBadge('Database unreachable', 'danger');
+          $('days-left').textContent = 'Check Supabase';
+          $('ping-msg').textContent =
+            'It may be paused. Open the Supabase dashboard and click "Restore", then press the button again.';
+          return null;
+        }
+
+        const tbody = $('history');
+        tbody.innerHTML = '';
+        if (!data.history.length) {
+          tbody.innerHTML = '<tr><td colspan="2">No pings yet</td></tr>';
+        }
+        for (const h of data.history) {
+          const tr = document.createElement('tr');
+          const t = document.createElement('td');
+          const s = document.createElement('td');
+          t.textContent = fmt(h.pinged_at);
+          s.textContent = h.source;
+          tr.append(t, s);
+          tbody.append(tr);
+        }
+
+        if (!data.last_ping) {
+          setBadge('No activity recorded', 'warn');
+          $('days-left').textContent = 'Press the button';
+          $('last-ping').textContent = 'never';
+          $('bar-fill').style.width = '0%';
+          return data;
+        }
+
+        const daysSince = (new Date(data.server_time) - new Date(data.last_ping)) / 86400000;
+        const left = Math.max(0, PAUSE_DAYS - daysSince);
+        $('last-ping').textContent = fmt(data.last_ping);
+        $('days-left').textContent = `${left.toFixed(1)} days before pause risk`;
+        $('bar-fill').style.width = `${(left / PAUSE_DAYS) * 100}%`;
+
+        if (left >= 4) setBadge('Safe', 'ok');
+        else if (left >= 2) setBadge('Ping soon', 'warn');
+        else setBadge('Ping now', 'danger');
+        return data;
+      }
+
+      async function ping(source) {
+        const btn = $('ping-btn');
+        btn.disabled = true;
+        btn.textContent = 'Pinging…';
+        const { error } = await supabase.rpc('ping', { src: source });
+        btn.disabled = false;
+        btn.textContent = 'Keep database active now';
+        $('ping-msg').textContent = error
+          ? `Ping failed: ${error.message}`
+          : `Database pinged at ${fmt(new Date().toISOString())} ✓`;
+        await loadStatus();
+      }
+
+      function readAuto() {
+        try { return localStorage.getItem(AUTO_KEY) !== 'off'; } catch { return true; }
+      }
+      function saveAuto(on) {
+        try { localStorage.setItem(AUTO_KEY, on ? 'on' : 'off'); } catch {}
+      }
+
+      async function showDashboard() {
+        $('login').hidden = true;
+        $('dashboard').hidden = false;
+        $('auto-ping').checked = readAuto();
+        const data = await loadStatus();
+        const stale =
+          data && (!data.last_ping ||
+            new Date(data.server_time) - new Date(data.last_ping) > 12 * 3600000);
+        if (readAuto() && stale) ping('admin-auto');
+      }
+
+      function showLogin() {
+        $('dashboard').hidden = true;
+        $('login').hidden = false;
+      }
+
+      $('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        $('login-error').textContent = '';
+        const { error } = await supabase.auth.signInWithPassword({
+          email: $('email').value.trim(),
+          password: $('password').value,
+        });
+        if (error) $('login-error').textContent = error.message;
+        else showDashboard();
+      });
+
+      $('logout').addEventListener('click', async () => {
+        await supabase.auth.signOut();
+        showLogin();
+      });
+      $('ping-btn').addEventListener('click', () => ping('admin-button'));
+      $('auto-ping').addEventListener('change', (e) => saveAuto(e.target.checked));
+
+      const { data: { session } } = await supabase.auth.getSession();
+      session ? showDashboard() : showLogin();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f6f7f9; --card: #fff; --text: #1d2330; --muted: #667085;
+        --brand: #0f766e; --ok: #15803d; --warn: #b45309; --danger: #b91c1c; --line: #e4e7ec;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root { --bg: #0f1218; --card: #181c24; --text: #e6e8ec; --muted: #98a2b3; --line: #2a303b; --brand: #2dd4bf; }
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 system-ui, sans-serif; }
+      .wrap { max-width: 640px; margin: 0 auto; padding: 32px 16px; }
+      .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+      .top { display: flex; justify-content: space-between; align-items: center; }
+      h1 { font-size: 1.5rem; margin: 0 0 16px; } h2 { font-size: 1.1rem; margin: 0 0 12px; }
+      label { display: block; margin-bottom: 12px; font-weight: 500; }
+      input[type=email], input[type=password] { display: block; width: 100%; margin-top: 4px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+      .btn { width: 100%; padding: 12px; border: 0; border-radius: 8px; background: var(--brand); color: #fff; font: 600 1rem system-ui; cursor: pointer; margin-top: 8px; }
+      .btn:disabled { opacity: .6; cursor: wait; }
+      .link { background: none; border: 0; color: var(--brand); cursor: pointer; font: inherit; }
+      .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: .85rem; font-weight: 600; background: var(--line); }
+      .badge[data-level=ok] { background: color-mix(in srgb, var(--ok) 15%, transparent); color: var(--ok); }
+      .badge[data-level=warn] { background: color-mix(in srgb, var(--warn) 15%, transparent); color: var(--warn); }
+      .badge[data-level=danger] { background: color-mix(in srgb, var(--danger) 15%, transparent); color: var(--danger); }
+      .big { font-size: 1.75rem; font-weight: 700; margin: 12px 0 4px; }
+      .muted { color: var(--muted); } .small { font-size: .85rem; } .error { color: var(--danger); }
+      .bar { height: 8px; background: var(--line); border-radius: 999px; overflow: hidden; margin: 12px 0 8px; }
+      #bar-fill { height: 100%; width: 0; background: var(--brand); transition: width .4s; }
+      .toggle { display: flex; gap: 8px; align-items: center; font-weight: 400; margin-top: 16px; }
+      table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+      th, td { text-align: left; padding: 8px 4px; border-bottom: 1px solid var(--line); }
+    </style>
+  </body>
+</html>

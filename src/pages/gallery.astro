@@ -1,0 +1,100 @@
+---
+// Photo gallery with lightbox (reference: /gallery/).
+// Photos are listed in src/data/gallery.json.
+// TODO (client): send real tour photos (WebP, about 1600 px wide) and add them to gallery.json.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import CTABanner from '../components/CTABanner.astro';
+import photos from '../data/gallery.json';
+
+const groups = [...new Set(photos.map((p) => p.group))];
+---
+<Base title="Photo Gallery" description="Photos from our Taj Mahal, Golden Triangle and Rajasthan tours: Agra, Delhi, Jaipur, Udaipur, Ranthambore and Varanasi.">
+  <PageHero title="Photo gallery" subtitle="A look at the places you will visit with us." image="/images/amber-fort.webp" crumbs={[{ label: 'Gallery' }]} />
+
+  <section class="container-x py-14">
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter photos by place">
+      <button type="button" data-g="" aria-pressed="true" class="g-filter rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">All</button>
+      {groups.map((g) => <button type="button" data-g={g} aria-pressed="false" class="g-filter rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">{g}</button>)}
+    </div>
+
+    <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      {photos.map((p, i) => (
+        <li class="g-item" data-group={p.group}>
+          <button type="button" class="g-open group relative block aspect-square w-full overflow-hidden rounded-xl bg-sand" data-index={i} aria-label={`Open photo: ${p.alt}`}>
+            <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading={i < 4 ? 'eager' : 'lazy'} decoding="async" class="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+            <span class="absolute bottom-2 left-2 rounded-md bg-primary-500 px-2 py-0.5 text-[11px] font-semibold text-white">{p.group}</span>
+          </button>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <dialog id="lightbox" class="m-auto max-h-[92vh] w-[min(1000px,94vw)] rounded-xl bg-dark-950 p-0 text-white backdrop:bg-dark-950/90" aria-label="Photo viewer">
+    <figure class="relative">
+      <img id="lb-img" src="" alt="" class="max-h-[78vh] w-full object-contain" />
+      <figcaption id="lb-cap" class="px-4 py-3 text-sm text-dark-100"></figcaption>
+    </figure>
+    <div class="flex items-center justify-between gap-2 border-t border-white/10 px-3 py-3">
+      <button type="button" id="lb-prev" class="rounded-lg border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-dark-900" aria-label="Previous photo">← Prev</button>
+      <span id="lb-count" class="text-xs text-dark-100/70"></span>
+      <div class="flex gap-2">
+        <button type="button" id="lb-next" class="rounded-lg border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-dark-900" aria-label="Next photo">Next →</button>
+        <button type="button" id="lb-close" class="rounded-lg bg-primary-500 px-4 py-2 text-sm font-semibold hover:bg-primary-600" aria-label="Close photo viewer">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <CTABanner title="See it for" accent="yourself" text="Every photo here is a place on one of our private tours. Ask us for a free, tailor-made quote." />
+</Base>
+
+<script>
+  const dialog = document.getElementById('lightbox') as HTMLDialogElement;
+  const img = document.getElementById('lb-img') as HTMLImageElement;
+  const cap = document.getElementById('lb-cap')!;
+  const counter = document.getElementById('lb-count')!;
+  const items = [...document.querySelectorAll<HTMLElement>('.g-item')];
+  let visible: HTMLElement[] = items;
+  let pos = 0;
+
+  const show = (i: number) => {
+    pos = (i + visible.length) % visible.length;
+    const src = visible[pos].querySelector('img')!;
+    img.src = src.src;
+    img.alt = src.alt;
+    cap.textContent = src.alt;
+    counter.textContent = `${pos + 1} / ${visible.length}`;
+  };
+
+  items.forEach((li) =>
+    li.querySelector('button')!.addEventListener('click', () => {
+      show(visible.indexOf(li));
+      dialog.showModal();
+    }),
+  );
+  document.getElementById('lb-prev')!.addEventListener('click', () => show(pos - 1));
+  document.getElementById('lb-next')!.addEventListener('click', () => show(pos + 1));
+  document.getElementById('lb-close')!.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+  dialog.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') show(pos - 1);
+    if (e.key === 'ArrowRight') show(pos + 1);
+  });
+
+  // Filter by place
+  const filters = [...document.querySelectorAll<HTMLButtonElement>('.g-filter')];
+  filters.forEach((b) =>
+    b.addEventListener('click', () => {
+      const g = b.dataset.g ?? '';
+      filters.forEach((f) => {
+        const on = f === b;
+        f.setAttribute('aria-pressed', String(on));
+        f.classList.toggle('!bg-dark-900', on);
+        f.classList.toggle('!text-white', on);
+      });
+      items.forEach((li) => (li.hidden = !!g && li.dataset.group !== g));
+      visible = items.filter((li) => !li.hidden);
+    }),
+  );
+  filters[0].classList.add('!bg-dark-900', '!text-white');
+</script>

@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import { site } from '../site.config';
+interface Props { selectedTour?: string; compact?: boolean }
+const { selectedTour, compact = false } = Astro.props;
+const tours = (await getCollection('tours')).sort((a, b) => a.data.order - b.data.order);
+---
+<form class="enquiry-form space-y-4" data-endpoint={site.leadsEndpoint} data-email={site.email} novalidate>
+  <!-- honeypot: real visitors never see or fill this -->
+  <div class="hidden" aria-hidden="true">
+    <label>Leave empty <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+  <div class:list={['grid gap-4', !compact && 'sm:grid-cols-2']}>
+    <label class="block text-sm font-medium text-dark-900">Full name *
+      <input class="input mt-1.5" name="name" required autocomplete="name" placeholder="Your name" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Email *
+      <input class="input mt-1.5" type="email" name="email" required autocomplete="email" placeholder="you@email.com" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Phone / WhatsApp *
+      <input class="input mt-1.5" type="tel" name="phone" required autocomplete="tel" placeholder="+1 …" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Country
+      <input class="input mt-1.5" name="country" autocomplete="country-name" placeholder="e.g. Australia" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Travellers
+      <input class="input mt-1.5" type="number" name="travellers" min="1" value="2" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Travel date
+      <input class="input mt-1.5" type="date" name="travel_date" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Pickup location
+      <input class="input mt-1.5" name="pickup" placeholder="Hotel / Delhi airport / Noida / Gurgaon" />
+    </label>
+    <label class="block text-sm font-medium text-dark-900">Tour of interest
+      <select class="input mt-1.5" name="tour">
+        <option value="">Not sure yet / tailor-made trip</option>
+        {tours.map((t) => <option value={t.data.title} selected={t.id === selectedTour}>{t.data.title}</option>)}
+      </select>
+    </label>
+  </div>
+  <label class="block text-sm font-medium text-dark-900">Tell us about your trip
+    <textarea class="input mt-1.5 min-h-28" name="message" placeholder="Interests, hotel category, guide language, special requests…"></textarea>
+  </label>
+  <button type="submit" class="btn-primary w-full sm:w-auto">Send enquiry</button>
+  <p class="form-status text-sm" role="status" aria-live="polite"></p>
+  <p class="text-xs text-muted">Free quote · Reserve with 15% deposit · Your details are only used to plan your trip.</p>
+</form>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('.enquiry-form').forEach((form) => {
+    const status = form.querySelector<HTMLElement>('.form-status')!;
+    const btn = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    const setStatus = (msg: string, ok: boolean) => {
+      status.textContent = msg;
+      status.className = `form-status text-sm ${ok ? 'text-dark-700' : 'text-primary-700'}`;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      if (fd.get('website')) return; // bot
+      const name = String(fd.get('name') || '').trim();
+      const email = String(fd.get('email') || '').trim();
+      const phone = String(fd.get('phone') || '').trim();
+      if (!name || !phone || !/^\S+@\S+\.\S+$/.test(email)) {
+        setStatus('Please enter your name, a valid email and phone number.', false);
+        return;
+      }
+      fd.delete('website');
+      fd.append('page', location.href);
+      fd.append('submitted_at', new Date().toISOString());
+
+      const endpoint = form.dataset.endpoint;
+      const mailtoFallback = () => {
+        const body = [...fd.entries()].map(([k, v]) => `${k}: ${v}`).join('\n');
+        location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent('Tour enquiry from ' + name)}&body=${encodeURIComponent(body)}`;
+      };
+
+      if (!endpoint) {
+        setStatus('Opening your email app to send the enquiry…', true);
+        mailtoFallback();
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Sending…';
+      try {
+        // Google Apps Script web app: no-cors means we can't read the reply, so a network error = failure
+        await fetch(endpoint, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(fd as any) });
+        form.reset();
+        setStatus('Thank you! Your enquiry has been sent. We’ll reply within 24 hours.', true);
+      } catch {
+        setStatus('Could not send right now. Opening your email app instead.', false);
+        mailtoFallback();
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Send enquiry';
+      }
+    });
+  });
+</script>

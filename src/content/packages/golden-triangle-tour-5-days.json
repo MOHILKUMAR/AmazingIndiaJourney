@@ -1,0 +1,79 @@
+{
+  "title": "Golden Triangle Tour 5 Days",
+  "summary": "Delhi, Agra and Jaipur in 5 days: India's imperial history and architectural masterpieces with 4 & 5 star hotels.",
+  "route": [
+    "Delhi",
+    "Agra",
+    "Fatehpur Sikri",
+    "Jaipur",
+    "Delhi"
+  ],
+  "days": 5,
+  "duration": "5 Days",
+  "reviewCount": 276,
+  "image": "/images/tours/gt-5.webp",
+  "imageAlt": "Golden Triangle tour",
+  "featured": true,
+  "order": 12,
+  "highlights": [
+    "Taj Mahal & Agra Fort",
+    "Fatehpur Sikri",
+    "Jaipur's forts & palaces",
+    "4 & 5 star hotels"
+  ],
+  "itinerary": [
+    {
+      "day": 1,
+      "title": "Arrive Delhi"
+    },
+    {
+      "day": 2,
+      "title": "Delhi → Agra"
+    },
+    {
+      "day": 3,
+      "title": "Agra → Fatehpur Sikri → Jaipur"
+    },
+    {
+      "day": 4,
+      "title": "Jaipur sightseeing"
+    },
+    {
+      "day": 5,
+      "title": "Jaipur → Delhi"
+    }
+  ],
+  "note": "The Taj Mahal remains closed on Fridays.",
+  "category": "golden-triangle",
+  "destinations": [
+    "golden-triangle",
+    "delhi",
+    "agra",
+    "jaipur"
+  ],
+  "hotelLevel": "4 & 5 star hotels",
+  "guide": "English-speaking guide",
+  "vehicle": "Private AC car",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "For multi-day packages, please confirm cancellation terms with our team at the time of booking."
+    },
+    {
+      "title": "Hotels",
+      "body": "4 & 5 star category hotels, with heritage options on request."
+    },
+    {
+      "title": "Customisation",
+      "body": "Every trip is 100% tailor-made to your pace, interests and budget. Ask us for a free quote."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

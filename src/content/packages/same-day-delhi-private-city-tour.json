@@ -1,0 +1,59 @@
+{
+  "title": "Same Day Delhi Private Guided City Tour",
+  "category": "same-day",
+  "summary": "Old and New Delhi in one day with a private AC car, English-speaking guide, entrance fees and a rickshaw ride.",
+  "destinations": [
+    "delhi"
+  ],
+  "route": [
+    "Delhi"
+  ],
+  "days": 1,
+  "duration": "1 day",
+  "priceFrom": 70,
+  "originalPrice": 100,
+  "badge": "30% Off",
+  "reviewCount": 1780,
+  "pickup": "Delhi hotels",
+  "guide": "English-speaking tour guide",
+  "vehicle": "Private AC car",
+  "image": "/images/tours/delhi-city.webp",
+  "imageAlt": "India Gate, New Delhi",
+  "featured": true,
+  "order": 3,
+  "highlights": [
+    "Private AC car for all sightseeing",
+    "English-speaking tour guide",
+    "Monument entrance fees + rickshaw ride",
+    "Water, tolls, parking & taxes"
+  ],
+  "inclusions": [
+    "Private AC car for all sightseeing",
+    "English-speaking tour guide",
+    "Monument entrance fees",
+    "Rickshaw ride",
+    "Water, tolls, parking & taxes"
+  ],
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour, or choose pay on arrival. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "Same-day excursions can be cancelled up to 24 hours in advance for a full refund."
+    },
+    {
+      "title": "Pickup & drop-off",
+      "body": "Any hotel in Delhi, Noida, Gurgaon or the surrounding region, as well as Delhi airport. Please share your pickup location when booking."
+    },
+    {
+      "title": "Private tour",
+      "body": "Only your group participates, with a dedicated AC vehicle, driver and guide."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

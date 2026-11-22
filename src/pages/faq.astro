@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import FAQList from '../components/FAQList.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getCollection } from 'astro:content';
+const faqs = await getCollection('faqs');
+const groups = [...new Set(faqs.map((f) => f.data.category))].map((c) => ({ c, items: faqs.filter((f) => f.data.category === c).map((f) => f.data) }));
+const jsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.data.q, acceptedAnswer: { '@type': 'Answer', text: f.data.a } })) };
+---
+<Base title="FAQ" description="Answers to common questions about booking and travelling in India." jsonLd={jsonLd}>
+  <PageHero title="Frequently asked questions" crumbs={[{ label: 'FAQ' }]} />
+  <section class="container-x max-w-4xl py-16 space-y-12">
+    {groups.map((g) => (<div><h2 class="mb-5 text-2xl text-dark-900">{g.c}</h2><FAQList items={g.items} /></div>))}
+  </section>
+  <CTABanner title="Still have" accent="questions?" text="Our team is happy to help. Send us a message or chat on WhatsApp." />
+</Base>

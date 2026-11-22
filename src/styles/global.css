@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  /* One clean sans-serif everywhere, plus an italic serif for the accent word in headings */
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-accent: "Crimson Text", Georgia, "Times New Roman", serif;
+
+  /* Colour scheme (inspired by creativeindiatours.com):
+     navy = headings, dark buttons, dark blocks · green = booking actions · orange = accent word, offers.
+     Where the exact reference shade fails WCAG AA with text, the -500/-600 shade is a touch deeper
+     (contrast ratio in brackets, against white). The -400 shades are the exact reference colours
+     and are only used for decoration or very large text. */
+  --color-dark-950: #001a36;
+  --color-dark-900: #00274f; /* navy: headings, header button (15.0) */
+  --color-dark-800: #0a3a6b; /* navy hover */
+  --color-dark-700: #494949; /* body text grey (9.0) */
+  --color-dark-600: #5d5d5d; /* muted grey (6.6) */
+  --color-dark-100: #e6edf5; /* navy tint */
+  --color-dark-50: #f5f8fb;
+
+  --color-primary-700: #1a4b21;
+  --color-primary-600: #225f2a; /* hover */
+  --color-primary-500: #2a7a35; /* buttons, white text (5.3) */
+  --color-primary-400: #318d3d; /* exact reference green, decoration (4.2) */
+  --color-primary-100: #e8f4ea;
+  --color-primary-50: #f3f9f4;
+
+  --color-accent-700: #8f3c00;
+  --color-accent-600: #b84d00; /* orange blocks with white text (5.1) */
+  --color-accent-500: #c25200; /* orange text, accent word (4.7) */
+  --color-accent-400: #f06701; /* exact reference orange: bars, borders, text on navy */
+  --color-accent-100: #fff1e6;
+  --color-accent-50: #fff8f2;
+
+  --color-star: #f5b301;
+  --color-cream: #ffffff;
+  --color-sand: #fafafa;
+  --color-ink: #494949;
+  --color-muted: #5d5d5d;
+  --color-line: #dddddd;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { @apply bg-white text-ink font-sans antialiased; }
+  h1, h2, h3, h4 { @apply font-display font-bold text-dark-900; letter-spacing: -0.01em; }
+  :focus-visible { outline: 2px solid var(--color-accent-500); outline-offset: 2px; }
+}
+
+@utility container-x { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+@utility btn { @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3 text-[15px] font-bold transition; }
+@utility btn-primary { @apply btn bg-primary-500 text-white hover:bg-primary-600; }
+@utility btn-dark { @apply btn bg-dark-900 text-white hover:bg-dark-800; }
+@utility btn-outline { @apply btn border border-dark-900 bg-white text-dark-900 hover:bg-dark-900 hover:text-white; }
+@utility btn-ghost { @apply btn border border-white text-white hover:bg-white hover:text-dark-900; }
+@utility eyebrow { @apply text-xs font-bold uppercase tracking-[0.18em] text-primary-500; }
+/* Cards: square corners and a soft shadow, like the reference tour boxes */
+@utility card { @apply bg-white shadow-[0_4px_25px_rgba(0,0,0,0.08)]; }
+@utility input { @apply w-full rounded-md border border-line bg-white px-4 py-3 text-sm outline-none transition focus:border-accent-500 focus:ring-2 focus:ring-accent-100; }
+/* Italic serif accent word inside headings */
+@utility accent-word { @apply font-accent italic font-semibold text-accent-500; }
+@utility section-alt { @apply bg-sand; }
+
+@layer components {
+  .prose-travel { @apply text-[1.0625rem] leading-relaxed text-ink/90; }
+  .prose-travel h2 { @apply mt-10 mb-3 text-2xl text-dark-900; }
+  .prose-travel h3 { @apply mt-8 mb-2 text-xl text-dark-900; }
+  .prose-travel p { @apply mb-5; }
+  .prose-travel ul { @apply mb-5 list-disc pl-6 space-y-1; }
+  .prose-travel ol { @apply mb-5 list-decimal pl-6 space-y-1; }
+  .prose-travel a { @apply text-accent-600 underline underline-offset-2; }
+  .prose-travel blockquote { @apply my-6 border-l-4 border-accent-400 pl-4 italic text-muted; }
+}

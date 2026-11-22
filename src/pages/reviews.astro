@@ -1,0 +1,107 @@
+---
+// Full reviews list (reference: /reviews/). Reviews come from src/data/reviews.json.
+// TODO (client): replace the SAMPLE reviews with real guest reviews (name, country, date, tour, text).
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Stars from '../components/Stars.astro';
+import MostReviewed from '../components/MostReviewed.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getCollection } from 'astro:content';
+import { site, categories } from '../site.config';
+
+const reviews = await getCollection('reviews');
+const tours = await getCollection('tours');
+const tourOf = (id?: string) => tours.find((t) => t.id === id);
+const catOf = (id?: string) => tourOf(id)?.data.category ?? '';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: site.name,
+  url: Astro.site?.toString(),
+  aggregateRating: { '@type': 'AggregateRating', ratingValue: site.rating.score, bestRating: 5, reviewCount: 5000 },
+};
+---
+<Base title="Guest Reviews" description={`Read what travellers say about ${site.name}: rated ${site.rating.score}/5 on ${site.rating.source} from ${site.rating.count} reviews.`} jsonLd={jsonLd}>
+  <PageHero title="Guest reviews" subtitle={`Rated ${site.rating.score} out of 5 by ${site.rating.count} travellers on ${site.rating.source}.`} image="/images/about.webp" crumbs={[{ label: 'Reviews' }]} />
+
+  <section class="container-x grid gap-8 py-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
+    <div class="rounded-2xl bg-dark-900 p-8 text-center text-white">
+      <p class="font-display text-6xl font-bold text-accent-400">{site.rating.score}</p>
+      <p class="mt-2"><Stars rating={5} /></p>
+      <p class="mt-2 text-sm">from {site.rating.count} {site.rating.source} reviews</p>
+      <ul class="mt-6 space-y-1 text-xs text-dark-100/80">
+        <li>TripAdvisor Certificate of Excellence 2015 to 2020, 2022, 2023</li>
+        <li>Top Rated on Viator</li>
+      </ul>
+    </div>
+    <MostReviewed />
+  </section>
+
+  <section class="container-x">
+    <div class="flex flex-wrap gap-2" role="group" aria-label="Filter reviews by tour type">
+      <button type="button" data-review-filter="" aria-pressed="true" class="review-filter rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">All reviews</button>
+      {categories.map((c) => <button type="button" data-review-filter={c.id} aria-pressed="false" class="review-filter rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-dark-900">{c.label}</button>)}
+    </div>
+    <p id="review-count" class="mt-5 text-sm text-muted" aria-live="polite">{reviews.length} reviews</p>
+
+    <div class="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {reviews.map((r) => {
+        const t = tourOf(r.data.tour);
+        return (
+          <article class="review-card card flex flex-col p-6" data-cat={catOf(r.data.tour)}>
+            <Stars rating={r.data.rating} />
+            <p class="review-text mt-4 text-sm leading-relaxed text-ink/85 line-clamp-5">“{r.data.text}”</p>
+            <button type="button" class="read-more mt-2 hidden self-start text-xs font-semibold text-primary-500 hover:text-primary-600" aria-expanded="false">Read more</button>
+            <div class="mt-auto border-t border-line pt-4 mt-5">
+              <p class="text-sm font-semibold text-dark-900">{r.data.name}</p>
+              <p class="text-xs text-muted">{r.data.location} · {r.data.date}</p>
+              {t && <a href={`/packages/${t.id}/`} class="mt-1 block text-xs text-accent-600 hover:text-primary-500">{t.data.title}</a>}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+    <p id="no-reviews" class="mt-8 hidden text-center text-muted">No reviews for this tour type yet.</p>
+
+    <div class="mt-12 rounded-2xl border border-line bg-white p-6 text-center">
+      <p class="text-dark-900">Travelled with us? We would love to hear from you.</p>
+      <a href="/contact/" class="btn-primary mt-4">Share your experience</a>
+    </div>
+  </section>
+
+  <CTABanner />
+</Base>
+<script>
+  // "Read more": only shown when the text is actually cut off
+  document.querySelectorAll<HTMLElement>('.review-card').forEach((card) => {
+    const text = card.querySelector<HTMLElement>('.review-text')!;
+    const btn = card.querySelector<HTMLButtonElement>('.read-more')!;
+    if (text.scrollHeight > text.clientHeight + 2) btn.classList.remove('hidden');
+    btn.addEventListener('click', () => {
+      const open = text.classList.toggle('line-clamp-5') === false;
+      btn.textContent = open ? 'Show less' : 'Read more';
+      btn.setAttribute('aria-expanded', String(open));
+    });
+  });
+
+  // Filter by tour type
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.review-filter')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.review-card')];
+  const count = document.getElementById('review-count')!;
+  const empty = document.getElementById('no-reviews')!;
+  const apply = (cat: string) => {
+    buttons.forEach((b) => {
+      const on = (b.dataset.reviewFilter ?? '') === cat;
+      b.setAttribute('aria-pressed', String(on));
+      b.classList.toggle('!bg-dark-900', on);
+      b.classList.toggle('!text-white', on);
+    });
+    let n = 0;
+    cards.forEach((c) => { const show = !cat || c.dataset.cat === cat; c.hidden = !show; if (show) n++; });
+    count.textContent = `${n} review${n === 1 ? '' : 's'}`;
+    empty.classList.toggle('hidden', n > 0);
+  };
+  buttons.forEach((b) => b.addEventListener('click', () => apply(b.dataset.reviewFilter ?? '')));
+  apply('');
+</script>

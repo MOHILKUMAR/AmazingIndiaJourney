@@ -1,0 +1,95 @@
+{
+  "title": "Same Day Taj Mahal Tour by Car from Delhi",
+  "category": "same-day",
+  "summary": "See the Taj Mahal and Agra Fort in one day from Delhi: private AC car, private English-speaking guide and hotel pickup.",
+  "destinations": [
+    "agra",
+    "delhi"
+  ],
+  "route": [
+    "Delhi",
+    "Agra",
+    "Delhi"
+  ],
+  "days": 1,
+  "duration": "12 hrs",
+  "priceFrom": 70,
+  "originalPrice": 100,
+  "badge": "30% Off",
+  "reviewCount": 1800,
+  "pickup": "Delhi, Noida & Gurgaon hotels",
+  "guide": "English-speaking private guide",
+  "vehicle": "Private AC car",
+  "image": "/images/tours/same-day-taj-car.webp",
+  "imageAlt": "Taj Mahal, Agra",
+  "featured": true,
+  "order": 1,
+  "highlights": [
+    "Private AC car Delhi–Agra–Delhi",
+    "English-speaking private guide",
+    "Taj Mahal, Agra Fort & local crafts",
+    "Mineral water, tolls & taxes"
+  ],
+  "itinerary": [
+    {
+      "time": "06:30 AM",
+      "title": "Delhi → Agra by car",
+      "description": "Pickup from your hotel in New Delhi / Gurgaon; drive via the Yamuna Expressway, reaching Agra in about 3 hours."
+    },
+    {
+      "time": "09:30 AM",
+      "title": "Visit the Taj Mahal",
+      "description": "Explore one of the Seven Wonders of the World with your private guide."
+    },
+    {
+      "time": "12:00 PM",
+      "title": "Visit Agra Fort",
+      "description": "The magnificent red-sandstone fort on the banks of the Yamuna."
+    },
+    {
+      "time": "02:30 PM",
+      "title": "Local arts & crafts",
+      "description": "Agra's famous marble inlay, carpet weaving and zardozi work."
+    },
+    {
+      "time": "03:30 PM",
+      "title": "Drive back to Delhi",
+      "description": "Return via the Yamuna Expressway and transfer to your hotel."
+    }
+  ],
+  "inclusions": [
+    "Delhi–Agra–Delhi by AC vehicle",
+    "English-speaking private guide",
+    "Packaged mineral water",
+    "All vehicle & driver expenses",
+    "All applicable taxes"
+  ],
+  "exclusions": [
+    "Monument entry fees",
+    "Meals",
+    "Gratuities for guide/driver"
+  ],
+  "note": "The Taj Mahal remains closed on Fridays.",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour, or choose pay on arrival. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "Same-day excursions can be cancelled up to 24 hours in advance for a full refund."
+    },
+    {
+      "title": "Pickup & drop-off",
+      "body": "Any hotel in Delhi, Noida, Gurgaon or the surrounding region, as well as Delhi airport. Please share your pickup location when booking."
+    },
+    {
+      "title": "Private tour",
+      "body": "Only your group participates, with a dedicated AC vehicle, driver and guide."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

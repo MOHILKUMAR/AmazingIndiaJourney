@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import { site, whatsappLink } from '../site.config';
+---
+<Base title="Contact Us" description="Send us your travel plans and get a free tailored itinerary within 24 hours.">
+  <PageHero title="Ready to discover India?" subtitle="Tell us what you want to experience and we’ll create your perfect private India journey. Your dream trip starts with a free quote." image="/images/amber-fort.webp" crumbs={[{ label: 'Contact' }]} />
+  <section class="container-x grid gap-10 py-16 lg:grid-cols-[1.5fr_1fr]">
+    <div class="card p-6 sm:p-8">
+      <h2 class="text-2xl text-dark-900">Send an enquiry</h2>
+      <p class="mt-1 mb-6 text-sm text-muted">Fields marked * are required.</p>
+      <EnquiryForm />
+    </div>
+    <div class="space-y-5">
+      <div class="card p-6">
+        <h3 class="text-lg text-dark-900">Talk to us</h3>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li><span class="block text-xs text-muted">Email</span><a href={`mailto:${site.email}`} class="font-medium text-dark-800 hover:text-primary-500">{site.email}</a></li>
+          <li><span class="block text-xs text-muted">Call / WhatsApp</span><a href={`tel:${site.phone.replace(/-/g, '')}`} class="font-medium text-dark-800 hover:text-primary-500">{site.phone}</a></li>
+          <li><span class="block text-xs text-muted">WhatsApp</span><a href={whatsappLink()} target="_blank" rel="noopener" class="font-medium text-dark-800 hover:text-primary-500">Chat with us</a></li>
+          <li><span class="block text-xs text-muted">Website</span><span class="font-medium">www.agradaytourpackages.com</span></li>
+          <li><span class="block text-xs text-muted">Office</span><span class="font-medium">{site.address}</span></li>
+        </ul>
+      </div>
+      <div class="rounded-2xl bg-dark-900 p-6 text-cream">
+        <h3 class="text-lg !text-white">What happens next?</h3>
+        <ol class="mt-4 list-decimal space-y-2 pl-5 text-sm text-dark-100/90">
+          <li>We review your request and pickup location.</li>
+          <li>You receive a free, tailor-made quote.</li>
+          <li>Reserve with a 15% deposit, then pay the rest during the tour.</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+</Base>

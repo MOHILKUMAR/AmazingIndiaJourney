@@ -1,0 +1,9 @@
+---
+// Logo is a hand-drawn SVG (public/images/logo.svg): about 3 KB, transparent, sharp at any size.
+import { site } from '../site.config';
+interface Props { light?: boolean }
+const { light = false } = Astro.props;
+---
+<a href="/" class:list={['inline-flex items-center', light && 'rounded-xl bg-white p-3']} aria-label={`${site.name} home`}>
+  <img src="/images/logo.svg" alt="Amazing India Journey" width="1000" height="220" class={light ? 'h-12 w-auto' : 'h-10 sm:h-12 w-auto'} />
+</a>

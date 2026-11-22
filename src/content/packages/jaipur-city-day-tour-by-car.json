@@ -1,0 +1,61 @@
+{
+  "title": "Jaipur City Day Tour by Car from Delhi",
+  "category": "same-day",
+  "summary": "A full day in the Pink City: forts and palaces of Jaipur with a private car, guide and skip-the-line access.",
+  "destinations": [
+    "jaipur",
+    "delhi"
+  ],
+  "route": [
+    "Delhi",
+    "Jaipur",
+    "Delhi"
+  ],
+  "days": 1,
+  "duration": "1 day",
+  "priceFrom": 70,
+  "originalPrice": 100,
+  "badge": "30% Off",
+  "reviewCount": 1650,
+  "pickup": "Delhi hotels",
+  "guide": "English-speaking tour guide",
+  "vehicle": "Private AC car",
+  "image": "/images/tours/jaipur-day.webp",
+  "imageAlt": "Travellers at a fort in Jaipur",
+  "featured": true,
+  "order": 4,
+  "highlights": [
+    "Private AC car Delhi–Jaipur–Delhi",
+    "English-speaking tour guide",
+    "Pink City forts & palaces",
+    "Pickup / drop & skip-the-line"
+  ],
+  "inclusions": [
+    "Private AC car Delhi–Jaipur–Delhi",
+    "English-speaking tour guide",
+    "Pickup & drop",
+    "Skip-the-line access"
+  ],
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour, or choose pay on arrival. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "Same-day excursions can be cancelled up to 24 hours in advance for a full refund."
+    },
+    {
+      "title": "Pickup & drop-off",
+      "body": "Any hotel in Delhi, Noida, Gurgaon or the surrounding region, as well as Delhi airport. Please share your pickup location when booking."
+    },
+    {
+      "title": "Private tour",
+      "body": "Only your group participates, with a dedicated AC vehicle, driver and guide."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

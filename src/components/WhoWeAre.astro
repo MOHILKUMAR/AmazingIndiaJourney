@@ -1,0 +1,28 @@
+---
+// "Who we are" block used on category landing pages (mirrors the reference site's closing about text)
+import { site } from '../site.config';
+const facts = [
+  { v: site.stats.years, l: 'years of experience' },
+  { v: site.stats.travellers, l: 'travellers hosted' },
+  { v: `${site.rating.score}/5`, l: `${site.rating.source} rating` },
+];
+---
+<section class="py-20">
+  <div class="container-x grid items-center gap-10 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+    <div class="prose-travel">
+      
+      <h2 class="!mt-0 text-[1.75rem] leading-tight sm:text-4xl">Who <span class="accent-word">we are</span></h2><p class="font-semibold text-dark-900">A local Agra team, trusted since {site.established}.</p>
+      <p>{site.name} is a unit of <strong>{site.parent}</strong>, an inbound tour company based in Agra. We plan private same-day and multi-day tours across the Golden Triangle and Rajasthan.</p>
+      <p>We are approved by the Ministry of Tourism, India and by IATO, and every trip is planned around your dates, pace and budget.</p>
+      <a href="/about/" class="btn-outline !no-underline">Read our story</a>
+    </div>
+    <dl class="grid grid-cols-3 gap-3">
+      {facts.map((f) => (
+        <div class="card border-t-4 border-accent-400 p-4 text-center">
+          <dd class="text-2xl font-extrabold text-primary-500 sm:text-3xl">{f.v}</dd>
+          <dt class="mt-1 text-xs text-muted">{f.l}</dt>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

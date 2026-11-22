@@ -1,0 +1,56 @@
+{
+  "title": "Golden Triangle with Udaipur",
+  "summary": "Add the lakes and palaces of Udaipur to Delhi, Agra and Jaipur.",
+  "destinations": [
+    "golden-triangle",
+    "rajasthan",
+    "agra",
+    "delhi",
+    "jaipur"
+  ],
+  "route": [
+    "Delhi",
+    "Agra",
+    "Fatehpur Sikri",
+    "Jaipur",
+    "Udaipur"
+  ],
+  "reviewCount": 299,
+  "image": "/images/tours/gt-udaipur.webp",
+  "imageAlt": "Boat ride on Lake Pichola, Udaipur",
+  "order": 23,
+  "highlights": [
+    "Delhi · Agra · Fatehpur Sikri",
+    "Jaipur → Udaipur",
+    "Udaipur lakes & palaces"
+  ],
+  "category": "gt-extension",
+  "days": 8,
+  "duration": "8 Days",
+  "hotelLevel": "4 & 5 star hotels",
+  "guide": "English-speaking guide",
+  "vehicle": "Private AC car",
+  "note": "The Taj Mahal remains closed on Fridays.",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "For multi-day packages, please confirm cancellation terms with our team at the time of booking."
+    },
+    {
+      "title": "Hotels",
+      "body": "4 & 5 star category hotels, with heritage options on request."
+    },
+    {
+      "title": "Customisation",
+      "body": "Every trip is 100% tailor-made to your pace, interests and budget. Ask us for a free quote."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

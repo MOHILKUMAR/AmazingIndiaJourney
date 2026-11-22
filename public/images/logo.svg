@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 220" role="img" aria-labelledby="t">
+  <title id="t">Amazing India Journey</title>
+  <!-- Plane trail and plane -->
+  <path d="M560 78 C620 40 700 34 790 30" fill="none" stroke="#f5b21b" stroke-width="5" stroke-linecap="round"/>
+  <g fill="#1f45a8" transform="translate(812 26) rotate(-28)">
+    <path d="M-34 0 C-34 -4 -30 -5 -26 -5 L26 -5 C34 -5 40 -2 40 0 C40 2 34 5 26 5 L-26 5 C-30 5 -34 4 -34 0Z"/>
+    <path d="M2 -4 L-10 -30 L-2 -30 L18 -4Z"/>
+    <path d="M2 4 L-10 30 L-2 30 L18 4Z"/>
+    <path d="M-28 -3 L-36 -14 L-31 -14 L-20 -3Z"/>
+    <path d="M-28 3 L-36 14 L-31 14 L-20 3Z"/>
+  </g>
+  <!-- Left minaret (orange) -->
+  <g fill="#f7941d">
+    <rect x="22" y="78" width="20" height="120"/>
+    <rect x="18" y="74" width="28" height="8"/>
+    <path d="M22 74 Q32 56 42 74Z"/>
+    <rect x="18" y="118" width="28" height="5"/>
+    <rect x="18" y="156" width="28" height="5"/>
+  </g>
+  <!-- Left wing (yellow) -->
+  <g fill="#f9c21a">
+    <rect x="50" y="122" width="52" height="76"/>
+    <path d="M58 122 Q76 96 94 122Z"/>
+    <rect x="75" y="88" width="2" height="10"/>
+  </g>
+  <path d="M60 198 V168 Q68 156 76 168 V198Z" fill="#fff"/>
+  <path d="M80 160 V146 Q86 138 92 146 V160Z" fill="#fff"/>
+  <!-- Main dome (pink) -->
+  <path d="M112 114 C104 82 128 62 152 50 L156 36 L160 50 C184 62 208 82 200 114Z" fill="#ec3d8f"/>
+  <rect x="155" y="22" width="2" height="16" fill="#ec3d8f"/>
+  <!-- Main body (blue) -->
+  <rect x="104" y="112" width="104" height="86" fill="#2169c4"/>
+  <path d="M132 198 V156 Q156 128 180 156 V198Z" fill="#fff"/>
+  <!-- Right small dome + wing -->
+  <path d="M212 124 Q228 96 244 124Z" fill="#ec3d8f"/>
+  <rect x="210" y="122" width="40" height="76" fill="#2169c4"/>
+  <path d="M220 198 V172 Q230 160 240 172 V198Z" fill="#fff"/>
+  <!-- Right minaret (green) -->
+  <g fill="#2fa84f">
+    <rect x="258" y="78" width="20" height="120"/>
+    <rect x="254" y="74" width="28" height="8"/>
+    <path d="M258 74 Q268 56 278 74Z"/>
+    <rect x="254" y="118" width="28" height="5"/>
+    <rect x="254" y="156" width="28" height="5"/>
+  </g>
+  <!-- Ground swoosh -->
+  <path d="M4 214 C80 188 190 186 300 196 C200 192 100 196 4 214Z" fill="#2fa84f"/>
+  <path d="M150 202 C220 196 280 190 320 176 C290 196 230 202 150 202Z" fill="#2169c4"/>
+  <!-- Wordmark -->
+  <text x="322" y="170" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-weight="700" font-size="80" textLength="660" lengthAdjust="spacingAndGlyphs">
+    <tspan fill="#1f45a8">Amazing India </tspan><tspan fill="#3aa62a">Journey</tspan>
+  </text>
+</svg>

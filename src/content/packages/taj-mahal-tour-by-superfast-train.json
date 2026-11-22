@@ -1,0 +1,62 @@
+{
+  "title": "Taj Mahal Tour by Superfast Train from Delhi",
+  "category": "same-day",
+  "summary": "Travel to Agra by superfast train in AC Chair Car, then explore the Taj Mahal with a private car and guide.",
+  "destinations": [
+    "agra",
+    "delhi"
+  ],
+  "route": [
+    "Delhi",
+    "Agra",
+    "Delhi"
+  ],
+  "days": 1,
+  "duration": "1 day",
+  "priceFrom": 90,
+  "originalPrice": 129,
+  "badge": "30% Off",
+  "reviewCount": 1820,
+  "pickup": "Delhi hotels",
+  "guide": "English-speaking tour guide",
+  "vehicle": "Superfast train + private AC car",
+  "image": "/images/tours/taj-train.webp",
+  "imageAlt": "Guest at the Taj Mahal",
+  "featured": true,
+  "order": 2,
+  "highlights": [
+    "Both-way AC Chair Car train tickets*",
+    "Private AC car for sightseeing",
+    "English-speaking tour guide",
+    "Water, tolls, parking & taxes"
+  ],
+  "inclusions": [
+    "Both-way AC Chair Car train tickets (subject to availability)",
+    "Private AC car for sightseeing",
+    "English-speaking tour guide",
+    "Water, tolls, parking & taxes"
+  ],
+  "note": "The Taj Mahal remains closed on Fridays. *Train tickets subject to availability.",
+  "importantInfo": [
+    {
+      "title": "Booking & payment",
+      "body": "Reserve now, pay later: book with a 15% advance deposit and pay the balance during the tour, or choose pay on arrival. Accepted: cash on arrival, credit card or PayPal."
+    },
+    {
+      "title": "Cancellation",
+      "body": "Same-day excursions can be cancelled up to 24 hours in advance for a full refund."
+    },
+    {
+      "title": "Pickup & drop-off",
+      "body": "Any hotel in Delhi, Noida, Gurgaon or the surrounding region, as well as Delhi airport. Please share your pickup location when booking."
+    },
+    {
+      "title": "Private tour",
+      "body": "Only your group participates, with a dedicated AC vehicle, driver and guide."
+    },
+    {
+      "title": "Guide languages",
+      "body": "Live guides are available in English, Spanish, German, French, Russian and Japanese."
+    }
+  ]
+}

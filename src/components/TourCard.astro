@@ -1,0 +1,84 @@
+---
+// Tour card in the reference layout:
+// photo → green title → route with pin → 2x2 facts (stay, hotels/pickup, guide, vehicle)
+// → "Starts from" price → full-width green "Book Now" bar
+import type { CollectionEntry } from 'astro:content';
+import ImageBox from './ImageBox.astro';
+import { formatPrice, formatCount } from '../scripts/format';
+import { site, categories, whatsappLink } from '../site.config';
+interface Props { tour: CollectionEntry<'tours'>; class?: string }
+const { tour, class: cls = '' } = Astro.props;
+const t = tour.data;
+const cat = categories.find((c) => c.id === t.category)!;
+const href = `/packages/${tour.id}/`;
+
+// Only facts we actually have from the brochure (nothing invented)
+const icons = {
+  stay: 'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z',
+  hotel: 'M3 21V7l9-4 9 4v14M9 21v-6h6v6M8 10h.01M12 10h.01M16 10h.01',
+  pin: 'M12 22s7-6.1 7-12a7 7 0 1 0-14 0c0 5.9 7 12 7 12Zm0-9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z',
+  guide: 'M4 22V4M4 4h12l-2 4 2 4H4',
+  car: 'M5 17h14M6 17v2M18 17v2M3 13l2-6h14l2 6v4H3v-4ZM7 13h.01M17 13h.01',
+};
+const facts = [
+  { label: 'Duration', value: t.duration, icon: icons.stay, tint: 'bg-accent-100 text-accent-600' },
+  t.hotelLevel
+    ? { label: 'Hotels', value: t.hotelLevel, icon: icons.hotel, tint: 'bg-[#fdeaf3] text-[#b0306e]' }
+    : t.pickup
+      ? { label: 'Pickup', value: t.pickup, icon: icons.pin, tint: 'bg-[#fdeaf3] text-[#b0306e]' }
+      : null,
+  t.guide ? { label: 'Trip guide', value: t.guide, icon: icons.guide, tint: 'bg-[#fff5d9] text-[#8a6200]' } : null,
+  t.vehicle ? { label: 'Vehicle', value: t.vehicle, icon: icons.car, tint: 'bg-primary-100 text-primary-600' } : null,
+].filter(Boolean) as { label: string; value: string; icon: string; tint: string }[];
+---
+<article class={`card group relative flex flex-col overflow-hidden ${cls}`}
+  data-cat={t.category} data-dest={t.destinations.join(' ')} data-days={t.days} data-price={t.priceFrom ?? 999999} data-order={t.order}>
+  <a href={href} class="relative block aspect-[4/3] overflow-hidden" tabindex="-1" aria-hidden="true">
+    <ImageBox src={t.image} alt={t.imageAlt ?? t.title} label={t.route[1] ?? t.route[0]} seed={tour.id} class="h-full w-full transition duration-500 group-hover:scale-105" />
+    {t.badge && <span class="absolute left-0 top-4 bg-accent-600 px-3 py-1 text-xs font-bold text-white">{t.badge}</span>}
+    <span class="absolute right-3 top-3 rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-dark-900">{cat.short}</span>
+  </a>
+
+  <div class="flex flex-1 flex-col p-5">
+    <h3 class="text-lg leading-snug"><a href={href} class="!text-dark-900 hover:!text-primary-500">{t.title}</a></h3>
+    <p class="mt-2 flex gap-2 text-[13px] font-semibold text-dark-900">
+      <svg class="mt-0.5 shrink-0 text-primary-500" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d={icons.pin} /></svg>
+      <span>{t.route.join(' · ')}</span>
+    </p>
+
+    <dl class="mt-4 grid grid-cols-2 gap-x-3 gap-y-3">
+      {facts.map((f) => (
+        <div class="flex gap-2">
+          <span class:list={['flex h-8 w-8 shrink-0 items-center justify-center rounded-md', f.tint]} aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d={f.icon} /></svg>
+          </span>
+          <div class="min-w-0">
+            <dt class="text-[11px] text-muted">{f.label}</dt>
+            <dd class="text-xs font-semibold leading-snug text-dark-900">{f.value}</dd>
+          </div>
+        </div>
+      ))}
+    </dl>
+
+    <div class="mt-auto pt-5">
+      {t.reviewCount && <p class="mb-2 text-xs text-muted"><span class="text-star">★★★★★</span> {formatCount(t.reviewCount)} reviews</p>}
+      {t.priceFrom ? (
+        <div>
+          <p class="text-xs text-muted">Starts from</p>
+          <p class="flex flex-wrap items-baseline gap-x-2">
+            <span class="text-xl font-extrabold text-dark-900" data-tour-price={tour.id}>{formatPrice(t.priceFrom)}</span>
+            <span class="text-xs text-muted">/{site.currency.perLabel}</span>
+            {t.originalPrice && <s class="text-xs text-muted">{formatPrice(t.originalPrice)}</s>}
+          </p>
+        </div>
+      ) : (
+        <div>
+          <p class="text-xs text-muted">Starts from</p>
+          <p class="text-lg font-extrabold text-dark-900" data-tour-price={tour.id}>Price on request</p>
+          <a href={whatsappLink(`Hi! Please share the price for: ${t.title}`)} target="_blank" rel="noopener" class="text-xs font-semibold text-accent-600 underline hover:text-primary-500">Enquire on WhatsApp</a>
+        </div>
+      )}
+    </div>
+  </div>
+  <a href={href} class="block bg-primary-500 py-4 text-center text-[15px] font-bold text-white transition hover:bg-primary-600">Book Now<span class="sr-only">: {t.title}</span></a>
+</article>

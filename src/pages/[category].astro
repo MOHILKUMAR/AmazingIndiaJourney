@@ -1,0 +1,101 @@
+---
+// Category landing pages: /same-day-tours/, /golden-triangle-tours/, /golden-triangle-extensions/, /rajasthan-tours/
+// Section order follows the reference site's tour-style pages:
+// hero → promise cards → reviews slider → tour cards → why us → process → FAQ → who we are → CTA
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import PromiseCards from '../components/PromiseCards.astro';
+import ReviewSlider from '../components/ReviewSlider.astro';
+import TourCard from '../components/TourCard.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import WhyUs from '../components/WhyUs.astro';
+import Process from '../components/Process.astro';
+import FAQList from '../components/FAQList.astro';
+import WhoWeAre from '../components/WhoWeAre.astro';
+import CTABanner from '../components/CTABanner.astro';
+import { getCollection } from 'astro:content';
+import { categories, site, whatsappLink } from '../site.config';
+import { formatPrice } from '../scripts/format';
+
+export function getStaticPaths() {
+  return categories.map((cat) => ({ params: { category: cat.slug }, props: { cat } }));
+}
+const { cat } = Astro.props;
+
+const tours = (await getCollection('tours')).filter((t) => t.data.category === cat.id).sort((a, b) => a.data.order - b.data.order);
+const faqs = (await getCollection('faqs')).filter((f) => (cat.faqGroups as readonly string[]).includes(f.data.category)).map((f) => f.data);
+const prices = tours.map((t) => t.data.priceFrom).filter((p): p is number => !!p);
+const fromPrice = prices.length ? Math.min(...prices) : undefined;
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ItemList',
+      name: cat.label,
+      itemListElement: tours.map((t, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: new URL(`/packages/${t.id}/`, Astro.site).toString(),
+        name: t.data.title,
+      })),
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).toString() },
+        { '@type': 'ListItem', position: 2, name: cat.label, item: pageUrl },
+      ],
+    },
+  ],
+};
+---
+<Base title={cat.seoTitle} description={cat.seoDescription} image={cat.image} jsonLd={jsonLd}>
+  <PageHero title={cat.heroTitle} subtitle={cat.heroText} eyebrow={`${tours.length} private tours`} image={cat.image} crumbs={[{ label: 'Tours', href: '/tours/' }, { label: cat.label }]}>
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      <a href="#tours" class="btn-primary">See the tours</a>
+      <a href={whatsappLink(`Hi! I am interested in your ${cat.label}.`)} target="_blank" rel="noopener" class="btn-ghost">Ask on WhatsApp</a>
+      <p class="w-full text-sm text-white/90 sm:w-auto sm:pl-2">
+        {fromPrice ? <>From <strong class="text-accent-400">{formatPrice(fromPrice)}</strong> {site.currency.perLabel}</> : <>Price on request, tailor-made to your dates</>}
+      </p>
+    </div>
+  </PageHero>
+
+  <PromiseCards />
+
+  <ReviewSlider />
+
+  <section id="tours" class="section-alt scroll-mt-32 py-16">
+    <div class="container-x">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading title="Explore our" accent={cat.label.replace("Tour Packages", "tours")} text={cat.blurb} />
+        <a href={`/tours/?cat=${cat.id}`} class="btn-outline">Filter all tours</a>
+      </div>
+      <div class:list={['mt-10 grid gap-6 sm:grid-cols-2', tours.length === 3 ? 'lg:grid-cols-3' : 'lg:grid-cols-4']}>
+        {tours.map((t) => <TourCard tour={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <WhyUs />
+  <Process />
+
+  <section class="py-20">
+    <div class="container-x grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+      <SectionHeading title="Frequently asked" accent="questions" text="Can’t find your answer? Message us on WhatsApp. We reply fast." />
+      <div>
+        <FAQList items={faqs} />
+        <a href="/faq/" class="mt-6 inline-block text-sm font-semibold text-primary-500 hover:text-primary-600">See all FAQs →</a>
+      </div>
+    </div>
+  </section>
+
+  <WhoWeAre />
+
+  <CTABanner title="Book your" accent="tour" text="Tell us your dates and pickup point. We will send a free, tailor-made quote, and you can reserve with a 15% deposit." />
+</Base>

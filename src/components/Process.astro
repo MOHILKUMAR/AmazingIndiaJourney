@@ -1,0 +1,23 @@
+---
+import SectionHeading from './SectionHeading.astro';
+const steps = [
+  { title: 'Consult', text: 'Share your dates, pickup location and interests through our form or WhatsApp.' },
+  { title: 'Customise', text: 'We send a tailor-made itinerary and price, shaped around your pace and budget.' },
+  { title: 'Finalise', text: 'Confirm with a 15% advance deposit and pay the balance during the tour.' },
+  { title: 'Explore', text: 'Private AC car, dedicated driver and expert guide, with 24/7 support.' },
+];
+---
+<section class="py-20">
+  <div class="container-x">
+    <SectionHeading center title="Your trip in" accent="four simple steps" />
+    <ol class="mt-12 grid gap-px bg-line sm:grid-cols-2 lg:grid-cols-4">
+      {steps.map((s, i) => (
+        <li class="bg-white p-7">
+          <span class="flex h-11 w-11 items-center justify-center rounded-md bg-accent-600 text-lg font-extrabold text-white">{i + 1}</span>
+          <h3 class="mt-4 text-xl">{s.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
